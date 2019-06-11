@@ -1,0 +1,12 @@
+elements:
+- type: "NomadJob"
+  variables:
+    version: "1.0-SNAPSHOT"
+  clusterManager: "http://10.10.10.10:4646/"
+  groupId: "topology-service"
+  elements:
+  - type: "NomadTask"
+    key: "topology"
+    image: "artifactory.ops.ripple.com:6555/ripplenet/services/topology:${version}"
+    port: 8888
+

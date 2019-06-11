@@ -1,0 +1,24 @@
+
+elements:
+- type: "NomadJob"
+
+  clusterManager: "http://10.10.10.10:4646/"
+  groupId: "xcurrent-h2-${topology_id}"
+  vaultToken: "vault-token"
+  region: "global"
+  datacenter: "dc1"
+
+  elements:
+  - type: "NomadTask"
+    key: "sf"
+    artifacts:
+    - source: "https://artifactory.ops.ripple.com/artifactory/ripplenet-topology/logback.xml"
+      destination: "etc/logback.xml"
+    volumes:
+    - "etc:/application/etc"
+    image: "artifactory.ops.ripple.com:6555/ripplenet/applications/xcurrent:0.25-SNAPSHOT"
+    port: 9000
+    maxRam: 512
+    httpCheck: "/"
+    properties:
+      db: "h2"

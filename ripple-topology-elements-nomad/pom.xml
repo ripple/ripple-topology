@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ripple.libraries.topology</groupId>
+        <artifactId>ripple-topology-parent</artifactId>
+        <version>1.6-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>ripple-topology-elements-nomad</artifactId>
+    <name>Ripple :: Topology :: Elements :: Nomad</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>ripple-topology-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.hashicorp.nomad</groupId>
+            <artifactId>nomad-sdk</artifactId>
+            <version>0.8.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ripple.libraries</groupId>
+            <artifactId>ripple-spring-runtime</artifactId>
+        </dependency>
+    </dependencies>
+</project>

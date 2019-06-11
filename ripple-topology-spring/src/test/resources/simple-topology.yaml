@@ -1,0 +1,13 @@
+variables:
+  accountName: "1234"
+
+elements:
+
+- type: "StaticHttpUrl"
+  key: "ny"
+  httpUrl: "http://localhost/"
+
+- type: "StaticHostAndPort"
+  key: "ldap"
+  hostAndPort: "localhost:9000"
+

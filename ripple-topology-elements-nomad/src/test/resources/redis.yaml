@@ -1,0 +1,18 @@
+elements:
+- type: "NomadJob"
+  variables:
+    redis5_version: "5.0.2"
+    redis3_version: "3.2"
+  clusterManager: "http://10.10.10.10:4646/"
+  groupId: "redis-${topology_id}"
+
+  elements:
+  - type: "NomadTask"
+    key: "redis5"
+    image: "redis:${redis5_version}"
+    port: 6379
+  - type: "NomadTask"
+    key: "redis3"
+    image: "redis:${redis3_version}"
+    port: 6379
+

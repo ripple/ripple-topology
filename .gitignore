@@ -1,0 +1,24 @@
+# Mac OS
+.DS_Store
+
+# Editor backup
+*.swp
+*~
+
+# IntelliJ IDEA project files
+.idea/
+*.iws
+*.ipr
+*.iml
+
+# Eclipse project files
+.project
+.classpath
+.settings/
+
+# Maven
+target/
+
+# Gradle
+.gradle/
+.resourceCache

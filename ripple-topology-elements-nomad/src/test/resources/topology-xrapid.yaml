@@ -1,0 +1,91 @@
+# Global variables may be used throughout this file
+# Here we begin the list of elements in the topology
+elements:
+ # An element may configure Java properties for another element
+- type: "PropertiesConfigurer"
+  properties:
+    db: "h2"
+    coreConfigSet: "set1"
+    fauxVaultMode: "true"
+    RUNTIME_REGION: "localregion"
+    exchangeExecutionGatewayMode: "LOCAL_FAUX"
+    withPaymentsQueue: "true"
+    exchangeStatisticsQueueMode: "publish"
+    coinsPhExchangeEnabled: "false"
+    coinsProExchangeEnabled: "false"
+    AUTH0_OAUTH_URL: "https://ripplenet-dev-us.auth0.com/"
+    AUTH0_AUDIENCE_URL: "https://xrapid.ripplenet.ripple.com"
+    RNS_AUDIENCE: "https://xrapid.com -DRNS_ORG_CLAIM=https://rnd.org"
+    prodVaultConnectionURI: "false"
+    RUNTIME_MODE: "dev"
+  applyToKeyEqualing: "xrapid"
+
+- type: "EnvironmentConfigurer"
+  environment:
+    # No need for an explicit value for JAVA_OPTS
+    # JAVA_OPTS will automatically be populated based on the values in the PropertiesConfigurer
+    # Had we wanted additional properties, we could have specified it as
+    # JAVA_OPTS: "-Xms32m -Xmx128m"
+    JAVA_OPTS: ""
+  applyToKeyEqualing: "xrapid"
+
+- type: "PropertiesConfigurer"
+  properties:
+    fauxVaultMode: "true"
+    AUTH0_OAUTH_URL: "https://ripplenet-dev-us.auth0.com/"
+    AUTH0_AUDIENCE_URL: "https://xrapid.ripplenet.ripple.com"
+    RNS_AUDIENCE: "https://xrapid.com"
+    RNS_ORG_CLAIM: "https://rnd.org"
+    APP_NAME: "xrapid-ripplenet"
+    CUSTOMER_ID: "ripple"
+    db: "h2"
+    xrapid-ripplenet.rippleNetAddress: "rn.xrapid.ripple"
+    autoCreateLiquidityRelationships: true
+    RUNTIME_MODE: "dev"
+  applyToKeyEqualing: "xrapid-ripplenet"
+
+- type: "EnvironmentConfigurer"
+  environment:
+    # No need for an explicit value for JAVA_OPTS
+    # JAVA_OPTS will automatically be populated based on the values in the PropertiesConfigurer
+    # Had we wanted additional properties, we could have specified it as
+    # JAVA_OPTS: "-Xms32m -Xmx128m"
+    JAVA_OPTS: ""
+  applyToKeyEqualing: "xrapid-ripplenet"
+
+- type: "NomadJob"
+  elements:
+  - type: "NomadTask"
+    key: "xrapid"
+    tags:
+    - "standalone.enable=true"
+    - "standalone.frontend.entryPoints=http,https"
+    - "standalone.frontend.rule=Host:xr.usw2.testdev.ripple.com"
+    image: "artifactory.ops.ripple.com:6555/ripplenet/applications/xrapid:2.2.0"
+    port: 9000
+    httpCheck: "/"
+    maxRam: 1024
+
+  - type: "NomadTask"
+    key: "xrapid-ripplenet"
+    artifacts:
+    - source: "https://artifactory.ops.ripple.com/artifactory/ripplenet-topology/sf-rn-keystore.pkcs12"
+      destination: "etc/keystore.pkcs12"
+      mode: "file"
+    volumes:
+    - "etc:/application/etc"
+    tags:
+    - "standalone.enable=true"
+    - "standalone.frontend.entryPoints=http,https"
+    - "standalone.frontend.rule=Host:xrrn.usw2.testdev.ripple.com"
+    image: "artifactory.ops.ripple.com:6555/ripplenet/applications/xrapid-ripplenet:2.1-SNAPSHOT"
+    port: 9000
+    httpCheck: "/"
+    maxRam: 1024
+
+  clusterManager: "http://10.10.10.10:4646/"
+  groupId: "xrapid-ripplenet-test"
+  vaultToken: "vault-token"
+  region: "global"
+  datacenter: "dc1"
+

@@ -1,0 +1,150 @@
+# Global variables may be used throughout this file
+variables:
+  runtime_mode: "prod"
+# Here we begin the list of elements in the topology
+elements:
+# An element may configure environment variables for a "applyToKeyEqualing" which is another element
+- type: "EnvironmentConfigurer"
+  environment:
+    POSTGRES_USER: "sf_user"
+    POSTGRES_PASSWORD: "sf_password"
+    POSTGRES_DB: "xcurrent_sf"
+  applyToKeyEqualing: "sf-db"
+
+- type: "EnvironmentConfigurer"
+  environment:
+    POSTGRES_USER: "ny_user"
+    POSTGRES_PASSWORD: "ny_password"
+    POSTGRES_DB: "xcurrent_ny"
+  applyToKeyEqualing: "ny-db"
+
+# An element may start a Nomad job
+- type: "NomadJob"
+  # A Nomad job element may have any number of sub-elements
+  elements:
+    # First we have a postgres database for "sf"
+  - type: "NomadTask"
+    key: "sf-db"
+    port: 5432
+    image: "artifactory.ops.ripple.com:6555/ripplenet/databases/postgres-9.4"
+    # We also have a postgres database for "ny"
+  - type: "NomadTask"
+    key: "ny-db"
+    port: 5432
+    image: "artifactory.ops.ripple.com:6555/ripplenet/databases/postgres-9.4"
+  clusterManager: "http://10.10.10.10:4646/"
+  groupId: "test-application-db-${database_id}"
+  vaultToken: "vault-token"
+  region: "global"
+  datacenter: "dc1"
+
+# An element may configure Java properties for another element
+- type: "PropertiesConfigurer"
+  variables:
+    pg_endpoint: "${sf-db.hostAndPort}"
+    pg_dialect: "postgres"
+    pg_driver: "postgresql"
+    pg_jdbcUrl: "jdbc:${pg_driver}://${pg_endpoint}/xcurrent_sf"
+  properties:
+    configurationservice.db.${pg_dialect}.url: "${pg_jdbcUrl}"
+    ledgerservice.db.${pg_dialect}.url: "${pg_jdbcUrl}"
+    paymentorchestrationservice.db.${pg_dialect}.url: "${pg_jdbcUrl}"
+    peerservice.db.${pg_dialect}.url: "${pg_jdbcUrl}"
+    quoteservice.db.${pg_dialect}.url: "${pg_jdbcUrl}"
+    ripplenetpublickeyservice.db.${pg_dialect}.url: "${pg_jdbcUrl}"
+    validator.db.${pg_dialect}.url: "${pg_jdbcUrl}"
+    xcurrent.db.${pg_dialect}.url: "${pg_jdbcUrl}"
+    xcurrentLiquidity.db.${pg_dialect}.url: "${pg_jdbcUrl}"
+    RUNTIME_MODE: "${runtime_mode}"
+  applyToKeyEqualing: "sf"
+
+- type: "EnvironmentConfigurer"
+  environment:
+    # No need for an explicit value for JAVA_OPTS
+    # JAVA_OPTS will automatically be populated based on the values in the PropertiesConfigurer
+    # Had we wanted additional properties, we could have specified it as
+    # JAVA_OPTS: "-Xms32m -Xmx128m"
+    JAVA_OPTS: ""
+  applyToKeyEqualing: "sf"
+
+- type: "PropertiesConfigurer"
+  variables:
+    pg_endpoint: "${ny-db.hostAndPort}"
+    pg_dialect: "postgres"
+    pg_driver: "postgresql"
+    pg_jdbcUrl: "jdbc:${pg_driver}://${pg_endpoint}/xcurrent_ny"
+  properties:
+    configurationservice.db.${pg_dialect}.url: "${pg_jdbcUrl}"
+    ledgerservice.db.${pg_dialect}.url: "${pg_jdbcUrl}"
+    paymentorchestrationservice.db.${pg_dialect}.url: "${pg_jdbcUrl}"
+    peerservice.db.${pg_dialect}.url: "${pg_jdbcUrl}"
+    quoteservice.db.${pg_dialect}.url: "${pg_jdbcUrl}"
+    ripplenetpublickeyservice.db.${pg_dialect}.url: "${pg_jdbcUrl}"
+    validator.db.${pg_dialect}.url: "${pg_jdbcUrl}"
+    xcurrent.db.${pg_dialect}.url: "${pg_jdbcUrl}"
+    xcurrentLiquidity.db.${pg_dialect}.url: "${pg_jdbcUrl}"
+    RUNTIME_MODE: "${runtime_mode}"
+  applyToKeyEqualing: "ny"
+
+- type: "EnvironmentConfigurer"
+  environment:
+    JAVA_OPTS: ""
+  applyToKeyEqualing: "ny"
+
+- type: "NomadJob"
+  elements:
+  - type: "NomadTask"
+    key: "sf"
+    artifacts:
+    - source: "https://artifactory.ops.ripple.com/artifactory/ripplenet-topology/logback.xml"
+      destination: "etc/logback.xml"
+      mode: "file"
+    - source: "https://artifactory.ops.ripple.com/artifactory/ripplenet-topology/sf-rn-keystore.pkcs12"
+      destination: "etc/rn-keystore.pkcs12"
+      mode: "file"
+    - source: "https://artifactory.ops.ripple.com/artifactory/ripplenet-topology/sf-usage-keystore.p12"
+      destination: "etc/usage-keystore.p12"
+      mode: "file"
+    - source: "https://artifactory.ops.ripple.com/artifactory/ripplenet-topology/sf-xcurrent.properties"
+      destination: "etc/xcurrent.properties"
+      mode: "file"
+    volumes:
+    - "etc:/application/etc"
+    tags:
+    - "standalone.enable=true"
+    - "standalone.frontend.entryPoints=http,https"
+    - "standalone.frontend.rule=Host:sf.usw2.testdev.ripple.com"
+    image: "artifactory.ops.ripple.com:6555/ripplenet/applications/xcurrent:0.25-SNAPSHOT"
+    port: 9000
+    httpCheck: "/"
+    maxRam: 1024
+  - type: "NomadTask"
+    key: "ny"
+    artifacts:
+    - source: "https://artifactory.ops.ripple.com/artifactory/ripplenet-topology/logback.xml"
+      destination: "etc/logback.xml"
+      mode: "file"
+    - source: "https://artifactory.ops.ripple.com/artifactory/ripplenet-topology/sf-rn-keystore.pkcs12"
+      destination: "etc/rn-keystore.pkcs12"
+      mode: "file"
+    - source: "https://artifactory.ops.ripple.com/artifactory/ripplenet-topology/sf-usage-keystore.p12"
+      destination: "etc/usage-keystore.p12"
+      mode: "file"
+    - source: "https://artifactory.ops.ripple.com/artifactory/ripplenet-topology/ny-xcurrent.properties"
+      destination: "etc/xcurrent.properties"
+      mode: "file"
+    volumes:
+    - "etc:/application/etc"
+    tags:
+    - "standalone.enable=true"
+    - "standalone.frontend.entryPoints=http,https"
+    - "standalone.frontend.rule=Host:ny.usw2.testdev.ripple.com"
+    image: "artifactory.ops.ripple.com:6555/ripplenet/applications/xcurrent:0.25-SNAPSHOT"
+    port: 9000
+    httpCheck: "/"
+    maxRam: 1024
+  clusterManager: "http://10.10.10.10:4646/"
+  groupId: "test-application-${application_id}"
+  vaultToken: "vault-token"
+  region: "global"
+  datacenter: "dc1"
