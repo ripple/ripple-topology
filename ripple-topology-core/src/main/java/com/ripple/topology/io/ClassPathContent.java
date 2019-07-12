@@ -1,6 +1,7 @@
 package com.ripple.topology.io;
 
-import com.ripple.runtime.Assert;
+import com.google.common.base.Preconditions;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,7 +22,7 @@ public class ClassPathContent extends AbstractFileResolvingContent {
     }
 
     public ClassPathContent(String path, ClassLoader classLoader) {
-        Assert.argumentNotNull(path, "path");
+        Preconditions.checkNotNull(path, "path");
         String pathToUse = StringUtils.cleanPath(path);
         if (pathToUse.startsWith("/")) {
             pathToUse = pathToUse.substring(1);
@@ -31,7 +32,7 @@ public class ClassPathContent extends AbstractFileResolvingContent {
     }
 
     public ClassPathContent(String path, Class<?> clazz) {
-        Assert.argumentNotNull(path, "path");
+        Preconditions.checkNotNull(path, "path");
         this.path = StringUtils.cleanPath(path);
         this.clazz = clazz;
     }

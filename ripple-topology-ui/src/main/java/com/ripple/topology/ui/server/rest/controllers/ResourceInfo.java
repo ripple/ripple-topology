@@ -2,9 +2,6 @@ package com.ripple.topology.ui.server.rest.controllers;
 
 import java.util.Objects;
 
-/**
- * @author jfulton
- */
 public class ResourceInfo {
 
     private String key;

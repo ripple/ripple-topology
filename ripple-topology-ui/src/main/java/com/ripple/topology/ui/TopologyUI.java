@@ -1,7 +1,7 @@
 package com.ripple.topology.ui;
 
+import com.ripple.topology.ui.server.config.SpringServer;
 import com.ripple.topology.ui.server.config.TopologyUIConfig;
-import com.ripple.libraries.server.spring.SpringServer;
 import com.ripple.topology.Topology;
 import java.util.Properties;
 import org.slf4j.Logger;
@@ -10,9 +10,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.PropertiesPropertySource;
 
-/**
- * @author UI Archetype
- */
 public class TopologyUI extends SpringServer {
 
     private final Topology topology;

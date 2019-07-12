@@ -8,15 +8,6 @@ import com.ripple.topology.Topology;
 import com.ripple.topology.VariableResolver;
 import com.ripple.topology.VariableResolverAware;
 import com.ripple.topology.utils.HealthUtils;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
-import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.regions.Region;
@@ -29,6 +20,16 @@ import software.amazon.awssdk.services.ec2.model.InstanceType;
 import software.amazon.awssdk.services.ec2.model.RunInstancesRequest;
 import software.amazon.awssdk.services.ec2.model.RunInstancesResponse;
 import software.amazon.awssdk.services.ec2.model.TerminateInstancesRequest;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 /**
  * @author jfulton
@@ -245,7 +246,7 @@ public class Ec2Resource extends AbstractPropertiesAndEnvironmentAwareResource<E
 
     @JsonIgnore
     public final String getCalculatedUserDataBase64() {
-        return new Base64().encodeAsString(getCalculatedUserData().getBytes());
+        return Base64.getEncoder().encodeToString(getCalculatedUserData().getBytes());
     }
 
     public int getJavaXmx() {

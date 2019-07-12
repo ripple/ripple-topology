@@ -2,9 +2,6 @@ package com.ripple.topology.spring.util;
 
 import com.ripple.topology.Topology;
 
-/**
- * @author jfulton
- */
 public class TopologySynchronousLifecycleManager {
 
     private Topology topology;

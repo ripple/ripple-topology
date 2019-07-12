@@ -16,7 +16,8 @@
 
 package com.ripple.topology.io;
 
-import com.ripple.runtime.Assert;
+import com.google.common.base.Preconditions;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +36,7 @@ public class UrlContent extends AbstractFileResolvingContent {
 	private final URL cleanedUrl;
 
 	public UrlContent(URL url) {
-		Assert.argumentNotNull(url, "url");
+		Preconditions.checkNotNull(url, "url");
 		this.url = url;
 		this.cleanedUrl = getCleanedUrl(this.url, url.toString());
 		this.uri = null;

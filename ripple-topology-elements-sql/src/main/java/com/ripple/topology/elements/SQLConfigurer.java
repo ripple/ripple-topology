@@ -1,12 +1,17 @@
 package com.ripple.topology.elements;
 
-import com.ripple.runtime.Assert;
+import com.google.common.base.Preconditions;
 import com.ripple.topology.PropertiesAware;
 import com.ripple.topology.Topology;
 import com.ripple.topology.VariableResolver;
 import com.ripple.topology.VariableResolverAware;
 import com.ripple.topology.io.Content;
 import com.ripple.topology.utils.HealthUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+
 import java.sql.Driver;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -14,10 +19,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 /**
  * @author jfulton
@@ -41,9 +42,10 @@ public class SQLConfigurer implements Configurer, VariableResolverAware, Propert
 
     public SQLConfigurer(final Class<? extends Driver> driverClass, final String jdbcUrl,
         final SQLCredentials credentials) {
-        this.driverClass = Assert.argumentNotNull(driverClass, "driverClass");
-        this.jdbcUrl = Assert.argumentNotBlank(jdbcUrl, "jdbcUrl");
-        this.credentials = Assert.argumentNotNull(credentials, "credentials");
+        this.driverClass = Preconditions.checkNotNull(driverClass, "driverClass");
+        this.jdbcUrl = Preconditions.checkNotNull(jdbcUrl, "jdbcUrl");
+        Preconditions.checkArgument(jdbcUrl.length() > 0, "jdbcUrl");
+        this.credentials = Preconditions.checkNotNull(credentials, "credentials");
     }
 
     @Override

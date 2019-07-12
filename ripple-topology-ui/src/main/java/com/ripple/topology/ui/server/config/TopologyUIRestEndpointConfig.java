@@ -1,9 +1,7 @@
 package com.ripple.topology.ui.server.config;
 
-import static com.ripple.libraries.server.jetty.JettyUtils.createServlet;
+import static com.ripple.topology.ui.server.config.JettyUtils.createServlet;
 
-import com.ripple.libraries.server.spring.EmbeddedServerServletContextListener;
-import javax.annotation.PostConstruct;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -20,9 +18,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.servlet.DispatcherServlet;
 
-/**
- * @author UI Archetype
- */
+import javax.annotation.PostConstruct;
+
 @Configuration
 public class TopologyUIRestEndpointConfig {
 

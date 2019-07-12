@@ -1,6 +1,7 @@
 package com.ripple.topology.io;
 
-import com.ripple.runtime.Assert;
+import com.google.common.base.Preconditions;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -52,7 +53,7 @@ public abstract class AbstractContent implements Content {
     @Override
     public long contentLength() throws IOException {
         InputStream is = getInputStream();
-        Assert.stateIsTrue(is != null, "Resource InputStream must not be null");
+        Preconditions.checkArgument(is != null, "Resource InputStream must not be null");
         try {
             long size = 0;
             byte[] buf = new byte[255];

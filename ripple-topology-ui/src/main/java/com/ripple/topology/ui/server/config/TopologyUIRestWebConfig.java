@@ -1,7 +1,6 @@
 package com.ripple.topology.ui.server.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ripple.runtime.RuntimeMode;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -23,9 +22,6 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
-/**
- * @author UI Archetype
- */
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.ripple.topology.ui.server.rest.controllers")
@@ -80,9 +76,6 @@ public class TopologyUIRestWebConfig extends WebMvcConfigurerAdapter implements 
         resolver.setPrefix("/");
         resolver.setSuffix(".html");
         resolver.setTemplateMode(TemplateMode.HTML);
-        if (RuntimeMode.isDevelopmentMode()) {
-            resolver.setCacheable(false);
-        }
         return resolver;
     }
 

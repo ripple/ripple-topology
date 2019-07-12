@@ -1,13 +1,14 @@
 package com.ripple.topology.io;
 
-import com.ripple.runtime.Assert;
+import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
-import org.apache.commons.lang3.StringUtils;
 
 public abstract class ContentUtils {
 
@@ -16,7 +17,7 @@ public abstract class ContentUtils {
     public static final String URL_PROTOCOL_FILE = "file";
 
     public static File getFile(URL resourceUrl, String description) throws FileNotFoundException {
-        Assert.argumentNotNull(resourceUrl, "resourceUrl");
+        Preconditions.checkNotNull(resourceUrl, "resourceUrl");
         if (!URL_PROTOCOL_FILE.equals(resourceUrl.getProtocol())) {
             throw new FileNotFoundException(
                 description + " cannot be resolved to absolute file path " +
@@ -31,7 +32,7 @@ public abstract class ContentUtils {
     }
 
     public static File getFile(URI resourceUri, String description) throws FileNotFoundException {
-        Assert.argumentNotNull(resourceUri, "resourceUri");
+        Preconditions.checkNotNull(resourceUri, "resourceUri");
         if (!URL_PROTOCOL_FILE.equals(resourceUri.getScheme())) {
             throw new FileNotFoundException(
                 description + " cannot be resolved to absolute file path " +
