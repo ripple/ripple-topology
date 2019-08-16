@@ -1,0 +1,59 @@
+# Java Maven CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/openjdk:8-jdk
+
+    working_directory: ~/repo
+
+    environment:
+      # Customize the JVM maximum heap limit
+      MAVEN_OPTS: -Xmx3200m
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run:
+          name: Maven Install
+          command:  mvn dependency:go-offline install
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
+
+
+      # save tests
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/testng/
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/testng/ \;
+            mkdir -p ~/checkstyle/
+            find . -type f -regex ".*/target/checkstyle-reports/.*xml" -exec cp {} ~/testng/ \;
+
+          when: always
+
+      - store_test_results:
+          path: ~/testng
+
+      - store_artifacts:
+          path: ~/testng
+
+
+      # publish the coverage report to codecov.io
+      - run: bash <(curl -s https://codecov.io/bash)
+
+

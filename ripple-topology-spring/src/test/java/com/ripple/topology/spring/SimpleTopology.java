@@ -7,9 +7,6 @@ import com.ripple.topology.elements.StaticHostAndPort;
 import com.ripple.topology.elements.StaticHttpUrl;
 import okhttp3.HttpUrl;
 
-/**
- * @author jfulton
- */
 public class SimpleTopology implements TopologyFactory {
 
     @Override

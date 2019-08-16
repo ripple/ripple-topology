@@ -12,10 +12,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.ripple.libraries</groupId>
-            <artifactId>ripple-runtime</artifactId>
-        </dependency>
-        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>ripple-topology-core</artifactId>
             <version>${project.version}</version>
@@ -27,10 +23,6 @@
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>rds</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -1,6 +1,7 @@
 package com.ripple.topology.io;
 
-import com.ripple.runtime.Assert;
+import com.google.common.base.Preconditions;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -14,7 +15,7 @@ public class DefaultContentLoader implements ContentLoader {
 
     @Override
     public Content getContent(String location) {
-        Assert.argumentNotNull(location, "location");
+        Preconditions.checkNotNull(location, "location");
 
         if (location.startsWith(CLASSPATH_URL_PREFIX)) {
             return new ClassPathContent(location.substring(CLASSPATH_URL_PREFIX.length()), getClassLoader());

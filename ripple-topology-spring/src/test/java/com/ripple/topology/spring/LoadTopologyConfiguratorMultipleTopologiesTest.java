@@ -13,9 +13,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
 
-/**
- * @author jfulton
- */
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Configuration
 @LoadTopology.List({

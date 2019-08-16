@@ -1,6 +1,7 @@
 package com.ripple.topology.elements;
 
-import com.ripple.runtime.Assert;
+import com.google.common.base.Preconditions;
+
 import java.util.Objects;
 
 /**
@@ -16,8 +17,10 @@ public class SFTPFileTransfer {
     }
 
     public SFTPFileTransfer(final String source, final String destination) {
-        this.source = Assert.argumentNotBlank(source, "source");
-        this.destination = Assert.argumentNotBlank(destination, "destination");
+        this.source = Preconditions.checkNotNull(source, "source");
+        Preconditions.checkArgument(source.length() > 0);
+        this.destination = Preconditions.checkNotNull(destination, "destination");
+        Preconditions.checkArgument(destination.length() > 0);
     }
 
     public String getSource() {

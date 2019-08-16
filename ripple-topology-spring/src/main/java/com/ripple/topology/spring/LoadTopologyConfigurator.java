@@ -18,9 +18,6 @@ import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 
-/**
- * @author jfulton
- */
 public class LoadTopologyConfigurator implements ImportBeanDefinitionRegistrar, ResourceLoaderAware {
 
     private static final Logger logger = LoggerFactory.getLogger(LoadTopologyConfigurator.class);

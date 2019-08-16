@@ -9,9 +9,6 @@ import okhttp3.HttpUrl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @author jfulton
- */
 public class TopologyServerMain {
 
     private static final Logger logger = LoggerFactory.getLogger(TopologyServerMain.class);

@@ -9,9 +9,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import org.springframework.context.annotation.Import;
 
-/**
- * @author jfulton
- */
 @Target(ElementType.TYPE)
 @Repeatable(LoadTopology.List.class)
 @Retention(RetentionPolicy.RUNTIME)
