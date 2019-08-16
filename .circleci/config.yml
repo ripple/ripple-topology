@@ -39,18 +39,18 @@ jobs:
       - run:
           name: Save test results
           command: |
-            mkdir -p ~/junit/
-            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
+            mkdir -p ~/testng/
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/testng/ \;
             mkdir -p ~/checkstyle/
-            find . -type f -regex ".*/target/checkstyle-reports/.*xml" -exec cp {} ~/junit/ \;
+            find . -type f -regex ".*/target/checkstyle-reports/.*xml" -exec cp {} ~/testng/ \;
 
           when: always
 
       - store_test_results:
-          path: ~/junit
+          path: ~/testng
 
       - store_artifacts:
-          path: ~/junit
+          path: ~/testng
 
 
       # publish the coverage report to codecov.io

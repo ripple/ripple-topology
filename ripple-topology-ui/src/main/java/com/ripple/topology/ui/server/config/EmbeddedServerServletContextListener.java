@@ -30,7 +30,6 @@ import org.springframework.web.context.support.GenericWebApplicationContext;
  * now find the requisite WebApplicationContext with access to all beans defined in the main application context.
  * </p>
  *
- * @author Jimmie Fulton
  */
 public class EmbeddedServerServletContextListener extends ContextLoader implements ServletContextListener, ApplicationContextAware {
 
